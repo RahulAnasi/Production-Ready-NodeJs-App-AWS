@@ -1,4 +1,4 @@
-# 🚀 Scalable DevOps Architecture on AWS (Node.js + ECS + Terraform)
+# Scalable DevOps Architecture on AWS (Node.js + ECS)
 
 This project demonstrates how to design, build, and deploy a containerized Node.js application using a complete DevOps workflow and AWS cloud infrastructure.
 
@@ -6,7 +6,7 @@ It starts from a simple Node.js application and evolves into a fully containeriz
 
 ---
 
-## 🧠 Problem Statement
+## Problem Statement
 
 Traditional backend applications are often:
 
@@ -17,16 +17,16 @@ Traditional backend applications are often:
 This project solves that by building a system that is:
 
 * Containerized
-* Automatically deployed
+* Automatically deployed (CI/CD)
 * Scalable and cloud-native
+* Production-oriented architecture
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
+
 
 The system is designed to handle incoming traffic, process requests via containerized services, and efficiently manage data using a database and caching layer.
-
-**Flow:**
 
 User → Application Load Balancer → ECS (Docker Containers)
                   ↓
@@ -36,7 +36,7 @@ User → Application Load Balancer → ECS (Docker Containers)
 
 ---
 
-## ⚙️ CI/CD Pipeline
+## CI/CD Pipeline
 
 Code changes are automatically built and deployed using a CI/CD pipeline:
 
@@ -48,7 +48,7 @@ GitHub → GitHub Actions → Amazon ECR → Amazon ECS
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Application Layer
 
@@ -57,7 +57,6 @@ GitHub → GitHub Actions → Amazon ECR → Amazon ECS
 
 ### DevOps & Cloud
 
-* Terraform → Infrastructure as Code
 * Docker → Containerization
 * Amazon ECS → Container orchestration
 * Amazon ECR → Container registry
@@ -68,19 +67,18 @@ GitHub → GitHub Actions → Amazon ECR → Amazon ECS
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-* ✅ Containerized backend application using Docker
-* ✅ Infrastructure fully provisioned using Terraform
-* ✅ Automated CI/CD pipeline (GitHub Actions → ECS)
-* ✅ Scalable deployment using ECS services
-* ✅ Load balancing using ALB
-* ✅ Managed database with Aurora
-* ✅ Performance optimization using Redis caching
+* Containerized backend application using Docker
+* Automated CI/CD pipeline (GitHub Actions → ECS)
+* Scalable deployment using ECS services
+* Load balancing using ALB
+* Managed database with Aurora
+* Performance optimization using Redis caching
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 ├── .github/
@@ -95,17 +93,17 @@ GitHub → GitHub Actions → Amazon ECR → Amazon ECS
 
 # Phase 1: Application & Containerization
 
-🎯 Goal
+  Goal
 
 Build a simple Node.js application and containerize it using Docker so it can run consistently across environments.
 
-🧩 Step 1: Create a Simple Node.js App
+  Step 1: Create a Simple Node.js App
 
-📌 What we did
+  What we did
       1) Created a basic HTTP server using Node.js
       2) Verified that the app runs locally
 
-🛠️ Commands
+  Commands
 ```
 mkdir aws-devops-project
 cd aws-devops-project
@@ -125,7 +123,7 @@ Paste the following code:
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-  res.end('Hello from DevOps Project 🚀');
+  res.end('Welcome to my Devops project');
 });
 
 server.listen(3000, () => {
@@ -142,14 +140,14 @@ Access in browser:
 
 http://localhost:3000
 
-🐳 Step 2: Dockerize the Application
+  Step 2: Dockerize the Application
 
-📌 What we did
+  What we did
 Created a Dockerfile
 Built a Docker image
 Ran the container locally
 
-🛠️ Commands
+  Commands
 
 Create Dockerfile:
 
@@ -185,13 +183,13 @@ Access in browser:
 http://localhost:3000
 ```
 
-✅ Outcome
+  Outcome
 Node.js application successfully created
 Application runs locally on port 3000
 Docker image built and containerized successfully
 Application runs inside a container
 
-💡 Key Learning
+  Key Learning
 How to build a basic backend service
 How Docker packages an application with its dependencies
 Why containerization is important for consistency across environments
@@ -200,15 +198,15 @@ Why containerization is important for consistency across environments
 
 ## Phase 2: Push Docker Image to AWS & Deploy with ECS
 
-### 🎯 Goal
+###   Goal
 
 Push the Docker image to a cloud registry and run the application as a live container using a managed service.
 
 ---
 
-## 📦 Step 1: Push Docker Image to Amazon ECR
+##   Step 1: Push Docker Image to Amazon ECR
 
-### 📌 What we did
+###   What we did
 
 * Created a private container registry
 * Authenticated Docker with AWS
@@ -216,7 +214,7 @@ Push the Docker image to a cloud registry and run the application as a live cont
 
 ---
 
-### 🛠️ Commands
+###   Commands
 
 Configure AWS CLI:
 
@@ -238,16 +236,16 @@ docker push <ECR-URL>:latest
 
 ---
 
-### ✅ Outcome
+###   Outcome
 
 * Docker image successfully stored in Amazon ECR
 * Image available for deployment in ECS
 
 ---
 
-## 🚀 Step 2: Deploy Application using ECS (Fargate)
+##   Step 2: Deploy Application using ECS (Fargate)
 
-### 📌 What we did
+###   What we did
 
 * Created ECS cluster using Fargate
 * Defined a task to run the container
@@ -255,7 +253,7 @@ docker push <ECR-URL>:latest
 
 ---
 
-### ⚙️ Configuration (Console Steps)
+###   Configuration (Console Steps)
 
 #### 1. Create ECS Cluster
 
@@ -290,18 +288,18 @@ docker push <ECR-URL>:latest
 
 ---
 
-### 🌐 Networking Setup
+###   Networking Setup
 
 * VPC: Default VPC
 * Subnets: All available
-* Auto-assign Public IP: ✅ Enabled
+* Auto-assign Public IP:   Enabled
 * Security Group:
 
   * Allow inbound traffic on port `3000`
 
 ---
 
-## 🌍 Access the Application
+##   Access the Application
 
 1. Go to ECS → Cluster → Tasks
 2. Open running task
@@ -313,7 +311,7 @@ http://<public-ip>:3000
 
 ---
 
-## ✅ Outcome
+##   Outcome
 
 * Application successfully deployed on AWS
 * Container running via ECS Fargate
@@ -321,7 +319,7 @@ http://<public-ip>:3000
 
 ---
 
-## 💡 Key Learning
+##   Key Learning
 
 * How container images are stored in ECR
 * How ECS runs containers without managing servers
@@ -330,15 +328,15 @@ http://<public-ip>:3000
 
 ---
 
-## 🌐 Phase 3: Load Balancing with ALB
+##   Phase 3: Load Balancing with ALB
 
-### 🎯 Goal
+###   Goal
 
 Improve application accessibility and scalability by introducing a load balancer instead of directly exposing containers.
 
 ---
 
-## ⚠️ Problem (Before)
+## Problem (Before)
 
 Initial architecture:
 
@@ -353,7 +351,7 @@ Limitations:
 
 ---
 
-## ✅ Solution (After)
+##   Solution (After)
 
 Updated architecture:
 
@@ -361,9 +359,9 @@ User → Application Load Balancer → ECS (Containers)
 
 ---
 
-## 🧩 Step: Add Application Load Balancer
+##   Step: Add Application Load Balancer
 
-### 📌 What we did
+###   What we did
 
 * Created an Application Load Balancer (ALB)
 * Attached it to ECS service
@@ -371,18 +369,18 @@ User → Application Load Balancer → ECS (Containers)
 
 ---
 
-### ⚠️ Important Note
+### Important Note
 
 Existing ECS services **cannot be directly modified** to attach an ALB.
 
-👉 Solution:
+  Solution:
 
 * Created a **new ECS service**
 * Configured it with ALB during setup
 
 ---
 
-### ⚙️ Configuration Steps (Console)
+###  Configuration Steps (Console)
 
 #### 1. Create ALB
 
@@ -413,7 +411,7 @@ While creating service:
 
 ---
 
-## 🌍 Access the Application
+## Access the Application
 
 1. Go to EC2 → Load Balancers
 2. Select your ALB
@@ -427,7 +425,7 @@ http://<ALB-DNS-name>
 
 ---
 
-## ✅ Outcome
+## Outcome
 
 * Application is now accessible via ALB
 * Traffic is routed to ECS containers
@@ -436,26 +434,26 @@ http://<ALB-DNS-name>
 
 ---
 
-## 💡 Key Learning
+## Key Learning
 
 * Why load balancers are essential in production systems
 * Difference between direct access vs load-balanced access
 * How ECS integrates with ALB using target groups
 * Basic traffic routing in cloud environments
 
-## 🔧 Important Fix: Expose App to External Traffic
+## Important Fix: Expose App to External Traffic
 
-### 🎯 Problem
+### Problem
 
 The application was not accessible when deployed in containers behind a load balancer.
 
 ---
 
-### 📌 Root Cause
+### Root Cause
 
 Original code:
 
-```js
+```
 server.listen(3000, () => {
 ```
 
@@ -468,15 +466,15 @@ By default, Node.js may bind to:
 This means:
 
 * App only accepts requests from inside the container
-* External traffic (ALB → ECS) cannot reach it ❌
+* External traffic (ALB → ECS) cannot reach it 
 
 ---
 
-### ✅ Solution
+### Solution
 
 Update the server to listen on all network interfaces:
 
-```js
+```
 server.listen(3000, '0.0.0.0', () => {
   console.log('Server running on port 3000');
 });
@@ -484,7 +482,7 @@ server.listen(3000, '0.0.0.0', () => {
 
 ---
 
-### 🧠 Why This Works
+### Why This Works
 
 * `0.0.0.0` = listen on all interfaces
 * Allows external traffic to reach the container
@@ -492,7 +490,7 @@ server.listen(3000, '0.0.0.0', () => {
 
 ---
 
-### ✅ Outcome
+### Outcome
 
 * Application became accessible via ALB
 * External users can now reach the service
@@ -500,7 +498,7 @@ server.listen(3000, '0.0.0.0', () => {
 
 ---
 
-### 💡 Key Learning
+### Key Learning
 
 * Difference between `localhost` and `0.0.0.0`
 * Why containerized apps must listen on all interfaces
@@ -508,13 +506,13 @@ server.listen(3000, '0.0.0.0', () => {
 
 ## 📈 Phase 4: Auto Scaling ECS Service
 
-### 🎯 Goal
+### Goal
 
 Enable the system to automatically handle traffic by scaling the number of running containers up or down.
 
 ---
 
-## ⚠️ Problem (Before)
+## Problem (Before)
 
 * ECS service was running **only 1 task**
 * Could not handle increased traffic
@@ -522,19 +520,19 @@ Enable the system to automatically handle traffic by scaling the number of runni
 
 ---
 
-## ✅ Solution
+## Solution
 
 Implemented **Auto Scaling** at the ECS service level.
 
 ---
 
-## 🧩 Step 1: Configure Scaling Limits
+## Step 1: Configure Scaling Limits
 
-### 📌 What we did
+### What we did
 
 Defined minimum, desired, and maximum number of tasks.
 
-### ⚙️ Configuration
+### Configuration
 
 * Minimum tasks: `1`
 * Desired tasks: `1`
@@ -542,15 +540,15 @@ Defined minimum, desired, and maximum number of tasks.
 
 ---
 
-## 🧩 Step 2: Add Scaling Policy
+## Step 2: Add Scaling Policy
 
-### 📌 What we did
+### What we did
 
 Configured a **Target Tracking Scaling Policy** based on CPU usage.
 
 ---
 
-### ⚙️ Configuration
+### Configuration
 
 * Policy type: Target Tracking
 * Metric: ECS Service Average CPU Utilization
@@ -558,7 +556,7 @@ Configured a **Target Tracking Scaling Policy** based on CPU usage.
 
 ---
 
-## 🧠 How Target Tracking Works
+## How Target Tracking Works
 
 * If CPU > 50% → ECS adds more tasks
 * If CPU ≤ 50% → ECS reduces tasks
@@ -567,15 +565,15 @@ The system automatically tries to maintain CPU around the target value.
 
 ---
 
-## ⏱️ Cooldown Periods (Important Concept)
+## Cooldown Periods (Important Concept)
 
-### 📌 Why cooldown exists
+### Why cooldown exists
 
 After scaling, ECS waits before making another decision to avoid unnecessary scaling.
 
 ---
 
-### 🔄 Types of cooldown
+### Types of cooldown
 
 **Scale-out cooldown**
 
@@ -587,7 +585,7 @@ After scaling, ECS waits before making another decision to avoid unnecessary sca
 
 ---
 
-## 🔁 Alternative: Step Scaling (Concept)
+## Alternative: Step Scaling (Concept)
 
 Instead of automatic adjustment, scaling can be defined manually:
 
@@ -599,7 +597,7 @@ This gives more control but requires manual configuration.
 
 ---
 
-## ✅ Outcome
+## Outcome
 
 * ECS service now scales automatically based on load
 * Improved availability during high traffic
@@ -607,22 +605,22 @@ This gives more control but requires manual configuration.
 
 ---
 
-## 💡 Key Learning
+## Key Learning
 
 * Difference between fixed capacity and auto scaling
 * How Target Tracking simplifies scaling decisions
 * Importance of cooldown periods
 * Basic scaling strategies in cloud environments
 
-## 🔄 Phase 5: CI/CD Pipeline (GitHub Actions → ECR → ECS)
+## Phase 5: CI/CD Pipeline (GitHub Actions → ECR → ECS)
 
-### 🎯 Goal
+### Goal
 
 Automate the deployment process so that every code change is automatically built, pushed, and deployed.
 
 ---
 
-## 🧠 Workflow Overview
+## Workflow Overview
 
 ```
 Git Push → GitHub Actions → Build Docker Image → Push to ECR → Update ECS Service
@@ -630,9 +628,9 @@ Git Push → GitHub Actions → Build Docker Image → Push to ECR → Update EC
 
 ---
 
-## 🧩 Step 1: Push Code to GitHub
+## Step 1: Push Code to GitHub
 
-### 📌 What we did
+### What we did
 
 * Created a GitHub repository
 * Uploaded project files
@@ -640,7 +638,7 @@ Git Push → GitHub Actions → Build Docker Image → Push to ECR → Update EC
 
 ---
 
-### 🛠️ Commands
+### Commands
 
 ```
 git init
@@ -653,16 +651,16 @@ git push -u origin main
 
 ---
 
-## 🧩 Step 2: Create CI/CD Pipeline
+## Step 2: Create CI/CD Pipeline
 
-### 📌 What we did
+### What we did
 
 * Created a GitHub Actions workflow
 * Automated build and deployment process
 
 ---
 
-### 📁 File Location
+### File Location
 
 ```
 .github/workflows/deploy.yml
@@ -670,7 +668,7 @@ git push -u origin main
 
 ---
 
-### ⚙️ Pipeline Configuration
+### Pipeline Configuration
 
 ```
 name: Deploy to ECS
@@ -718,9 +716,9 @@ jobs:
 
 ---
 
-## 🔐 Step 3: Configure Secrets
+## Step 3: Configure Secrets
 
-### 📌 What we did
+### What we did
 
 Stored AWS credentials securely in GitHub.
 
@@ -732,7 +730,7 @@ Required secrets:
 
 ---
 
-## 🚀 How It Works
+## How It Works
 
 1. Code is pushed to GitHub (`main` branch)
 2. GitHub Actions pipeline is triggered
@@ -743,7 +741,7 @@ Required secrets:
 
 ---
 
-## ✅ Outcome
+## Outcome
 
 * Fully automated deployment pipeline
 * No manual Docker or ECS commands needed
@@ -751,22 +749,22 @@ Required secrets:
 
 ---
 
-## 💡 Key Learning
+## Key Learning
 
 * How CI/CD pipelines automate deployments
 * Integration between GitHub, ECR, and ECS
 * Importance of secrets management
 * How ECS updates services with new container images
 
-## 🗄️ Phase 6: Database Integration (RDS MySQL)
+## Phase 6: Database Integration (RDS MySQL)
 
-### 🎯 Goal
+### Goal
 
 Enhance the application from a static response system to a dynamic, data-driven application by integrating a managed database.
 
 ---
 
-## ⚠️ Problem (Before)
+## Problem (Before)
 
 * Application returned static responses
 * No data persistence
@@ -774,22 +772,22 @@ Enhance the application from a static response system to a dynamic, data-driven 
 
 ---
 
-## ✅ Solution
+## Solution
 
 Integrated a managed MySQL database using Amazon RDS.
 
 ---
 
-## 🧩 Step 1: Create Database (RDS)
+## Step 1: Create Database (RDS)
 
-### 📌 What we did
+### What we did
 
 * Created a MySQL database instance using AWS RDS
 * Configured networking to allow ECS access
 
 ---
 
-### ⚙️ Configuration
+### Configuration
 
 * Engine: MySQL
 * DB Identifier: `aws-devops-app-db`
@@ -799,24 +797,24 @@ Integrated a managed MySQL database using Amazon RDS.
 
 ---
 
-### 🔐 Security Group (Temporary Setup)
+### Security Group (Temporary Setup)
 
 * Type: MySQL
 * Port: `3306`
-* Source: `0.0.0.0/0` (⚠️ Temporary for testing only)
+* Source: `0.0.0.0/0` (Temporary for testing only)
 
 ---
 
-### 📍 Get Endpoint
+### Get Endpoint
 
 * Go to RDS → Database → Connectivity
 * Copy **endpoint URL**
 
 ---
 
-## 🧩 Step 2: Update Application
+## Step 2: Update Application
 
-### 📌 What we did
+### What we did
 
 * Added MySQL client (`mysql2`)
 * Connected Node.js app to database
@@ -824,17 +822,17 @@ Integrated a managed MySQL database using Amazon RDS.
 
 ---
 
-### 🛠️ Install dependency
+### Install dependency
 
-```bash id="vx2g8p"
+```
 npm install mysql2
 ```
 
 ---
 
-### 💻 Updated `app.js`
+### Updated `app.js`
 
-```js id="8o1m8n"
+```
 const http = require('http');
 const mysql = require('mysql2');
 
@@ -863,7 +861,7 @@ connection.query(`
 const server = http.createServer((req, res) => {
 
   connection.query(
-    "INSERT INTO messages (text) VALUES ('Hello from AWS 🚀')"
+    "INSERT INTO messages (text) VALUES ('Hello from AWS ')"
   );
 
   connection.query(
@@ -886,11 +884,11 @@ server.listen(3000, '0.0.0.0', () => {
 
 ---
 
-## 🧩 Step 3: Rebuild & Deploy
+## Step 3: Rebuild & Deploy
 
-### 🛠️ Commands
+### Commands
 
-```bash id="xt8y2q"
+```
 docker build -t aws-devops-app .
 docker tag aws-devops-app:latest <ecr-url>:latest
 docker push <ecr-url>:latest
@@ -898,7 +896,7 @@ docker push <ecr-url>:latest
 
 Or trigger via CI/CD:
 
-```bash id="l6z3fr"
+```
 git add .
 git commit -m "Add DB integration"
 git push
@@ -906,7 +904,7 @@ git push
 
 ---
 
-## 🔄 Deployment Flow
+## Deployment Flow
 
 ```
 Git Push → GitHub Actions → Docker Build → ECR Push → ECS Deployment → App connects to RDS
@@ -914,7 +912,7 @@ Git Push → GitHub Actions → Docker Build → ECR Push → ECS Deployment →
 
 ---
 
-## 🌍 Test the Application
+## Test the Application
 
 * Open ALB URL in browser
 * Each request:
@@ -925,7 +923,7 @@ Git Push → GitHub Actions → Docker Build → ECR Push → ECS Deployment →
 
 ---
 
-## ✅ Outcome
+## Outcome
 
 * Application now stores and retrieves data
 * Backend is fully functional
@@ -933,7 +931,7 @@ Git Push → GitHub Actions → Docker Build → ECR Push → ECS Deployment →
 
 ---
 
-## 💡 Key Learning
+## Key Learning
 
 * How applications connect to managed databases
 * Importance of VPC and security groups
@@ -942,21 +940,21 @@ Git Push → GitHub Actions → Docker Build → ECR Push → ECS Deployment →
 
 ---
 
-## ⚠️ Important Notes
+## Important Notes
 
 * Database is publicly accessible (not secure for production)
 * Credentials are hardcoded (should use environment variables)
 * No connection pooling implemented yet
 
-## ⚡ Phase 7: Caching Layer (Redis with ElastiCache)
+## Phase 7: Caching Layer (Redis with ElastiCache)
 
-### 🎯 Goal
+### Goal
 
 Improve application performance by reducing direct database calls using a caching layer.
 
 ---
 
-## ⚠️ Problem (Before)
+## Problem (Before)
 
 * Every request directly queried the database
 * Increased latency
@@ -964,13 +962,13 @@ Improve application performance by reducing direct database calls using a cachin
 
 ---
 
-## ✅ Solution
+## Solution
 
 Introduced a caching layer using Redis.
 
 ---
 
-## 🧠 Architecture Update
+## Architecture Update
 
 Before:
 
@@ -986,16 +984,16 @@ Request → Cache (Redis) → Database (if needed)
 
 ---
 
-## 🧩 Step 1: Create Redis (ElastiCache)
+## Step 1: Create Redis (ElastiCache)
 
-### 📌 What we did
+### What we did
 
 * Created a Redis cluster using Amazon ElastiCache
 * Configured networking to allow ECS access
 
 ---
 
-### ⚙️ Configuration
+### Configuration
 
 * Engine: Redis OSS
 * Deployment: Node-based cluster
@@ -1006,23 +1004,23 @@ Request → Cache (Redis) → Database (if needed)
 
 ---
 
-### 🔐 Security Group (Temporary)
+### Security Group (Temporary)
 
 * Port: `6379`
-* Source: `0.0.0.0/0` (⚠️ Temporary for testing only)
+* Source: `0.0.0.0/0` (Temporary for testing only)
 
 ---
 
-### 📍 Get Endpoint
+### Get Endpoint
 
 * Go to ElastiCache → Cluster
 * Copy **Primary Endpoint**
 
 ---
 
-## 🧩 Step 2: Update Application
+## Step 2: Update Application
 
-### 📌 What we did
+### What we did
 
 * Installed Redis client
 * Added caching logic to application
@@ -1030,17 +1028,17 @@ Request → Cache (Redis) → Database (if needed)
 
 ---
 
-### 🛠️ Install dependency
+### Install dependency
 
-```bash id="k1n4wz"
+```
 npm install redis
 ```
 
 ---
 
-### 💻 Updated `app.js`
+### Updated `app.js`
 
-```js id="r4c9tx"
+```
 const http = require('http');
 const mysql = require('mysql2');
 const redis = require('redis');
@@ -1056,8 +1054,8 @@ const redisClient = redis.createClient({
 });
 
 redisClient.connect()
-  .then(() => console.log("✅ Connected to Redis"))
-  .catch(err => console.error("❌ Redis connection failed:", err));
+  .then(() => console.log("Connected to Redis"))
+  .catch(err => console.error("Redis connection failed:", err));
 
 // MySQL connection
 const connection = mysql.createConnection({
@@ -1068,11 +1066,11 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
   if (err) {
-    console.error('❌ DB connection failed:', err);
+    console.error('DB connection failed:', err);
     return;
   }
 
-  console.log('✅ Connected to DB');
+  console.log('Connected to DB');
 
   connection.query("CREATE DATABASE IF NOT EXISTS devopsdb");
   connection.query("USE devopsdb");
@@ -1093,12 +1091,12 @@ const server = http.createServer(async (req, res) => {
     const cached = await redisClient.get("messages");
 
     if (cached) {
-      console.log("⚡ Serving from Redis cache");
+      console.log("Serving from Redis cache");
       res.end(cached);
       return;
     }
 
-    console.log("📦 Fetching from DB");
+    console.log("Fetching from DB");
 
     // 2. Fetch from DB
     connection.query(
@@ -1133,25 +1131,25 @@ server.listen(3000, '0.0.0.0', () => {
 
 ---
 
-## 🔄 How It Works
+## How It Works
 
 ### First Request
 
-* Cache MISS ❌
+* Cache MISS
 * Data fetched from DB
 * Stored in Redis
 
 ### Subsequent Requests (within 10 seconds)
 
-* Cache HIT ✅
+* Cache HIT
 * Data served directly from Redis
 * Faster response time
 
 ---
 
-## 🚀 Deploy Changes
+## Deploy Changes
 
-```bash id="j3k8vn"
+```
 git add .
 git commit -m "Add Redis caching"
 git push
@@ -1159,7 +1157,7 @@ git push
 
 ---
 
-## 🧪 Testing
+## Testing
 
 * Open ALB URL multiple times
 * Check logs:
@@ -1171,7 +1169,7 @@ Serving from Redis cache
 
 ---
 
-## ✅ Outcome
+## Outcome
 
 * Reduced database load
 * Faster response times
@@ -1179,7 +1177,7 @@ Serving from Redis cache
 
 ---
 
-## 💡 Key Learning
+## Key Learning
 
 * Difference between cache and database
 * Cache-first design pattern
@@ -1188,7 +1186,7 @@ Serving from Redis cache
 
 ---
 
-## ⚠️ Important Notes
+## Important Notes
 
 * Redis is publicly accessible (not secure for production)
 * Cache expiry set to 10 seconds (demo purpose)
@@ -1196,7 +1194,7 @@ Serving from Redis cache
 
 
 
-## ⚙️ How It Works (End-to-End)
+## How It Works (End-to-End)
 
 1. User sends request to the application
 2. ALB routes traffic to ECS service
@@ -1207,7 +1205,7 @@ Serving from Redis cache
 
 ---
 
-## 📊 What This Project Demonstrates
+## What This Project Demonstrates
 
 * Real-world DevOps workflow
 * Infrastructure automation using Terraform
@@ -1218,7 +1216,7 @@ Serving from Redis cache
 
 ---
 
-## ⚠️ Limitations
+## Limitations
 
 * Basic application logic (focus is on infrastructure)
 * No authentication/authorization
@@ -1226,7 +1224,7 @@ Serving from Redis cache
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
 * Add monitoring (CloudWatch / Prometheus)
 * Implement structured logging
@@ -1235,6 +1233,6 @@ Serving from Redis cache
 
 ---
 
-## 📜 License
+## License
 
 This project is for educational purposes.
