@@ -90,9 +90,7 @@ GitHub → GitHub Actions → Amazon ECR → Amazon ECS
 ├── app.js
 ├── package.json
 └── package-lock.json
-```
 
----
 
 # Phase 1: Application & Containerization
 
@@ -207,7 +205,7 @@ Push the Docker image to a cloud registry and run the application as a live cont
 Configure AWS CLI:
 
 aws configure
-```
+
 
 Login to ECR:
 
@@ -314,8 +312,121 @@ http://<public-ip>:3000
 * Difference between **Task** and **Service**
 * Basics of cloud networking (VPC, subnets, security groups)
 
+---
+
+## 🌐 Phase 3: Load Balancing with ALB
+
+### 🎯 Goal
+
+Improve application accessibility and scalability by introducing a load balancer instead of directly exposing containers.
 
 ---
+
+## ⚠️ Problem (Before)
+
+Initial architecture:
+
+User → ECS Container
+
+Limitations:
+
+* No load distribution
+* No fault tolerance
+* Direct exposure of container IP
+* Not scalable
+
+---
+
+## ✅ Solution (After)
+
+Updated architecture:
+
+User → Application Load Balancer → ECS (Containers)
+
+---
+
+## 🧩 Step: Add Application Load Balancer
+
+### 📌 What we did
+
+* Created an Application Load Balancer (ALB)
+* Attached it to ECS service
+* Routed incoming traffic to containers
+
+---
+
+### ⚠️ Important Note
+
+Existing ECS services **cannot be directly modified** to attach an ALB.
+
+👉 Solution:
+
+* Created a **new ECS service**
+* Configured it with ALB during setup
+
+---
+
+### ⚙️ Configuration Steps (Console)
+
+#### 1. Create ALB
+
+* Go to EC2 → Load Balancers
+* Create **Application Load Balancer**
+* Scheme: Internet-facing
+* Listener: HTTP (port 80)
+
+---
+
+#### 2. Create Target Group
+
+* Target type: IP
+* Port: 3000
+* Health check path: `/`
+
+---
+
+#### 3. Create New ECS Service (with ALB)
+
+While creating service:
+
+* Load balancer type: Application Load Balancer
+* Select created ALB
+* Listener: HTTP (port 80)
+* Target group: select created target group
+* Container port: 3000
+
+---
+
+## 🌍 Access the Application
+
+1. Go to EC2 → Load Balancers
+2. Select your ALB
+3. Copy **DNS name**
+
+Access in browser:
+
+```
+http://<ALB-DNS-name>
+```
+
+---
+
+## ✅ Outcome
+
+* Application is now accessible via ALB
+* Traffic is routed to ECS containers
+* Improved scalability and availability
+* Removed dependency on public IP
+
+---
+
+## 💡 Key Learning
+
+* Why load balancers are essential in production systems
+* Difference between direct access vs load-balanced access
+* How ECS integrates with ALB using target groups
+* Basic traffic routing in cloud environments
+
 ## ⚙️ How It Works (End-to-End)
 
 1. User sends request to the application
