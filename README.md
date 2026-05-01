@@ -1,4 +1,3 @@
-# Production-Ready-NodeJs-AWS-App
 # 🚀 Scalable DevOps Architecture on AWS (Node.js + ECS + Terraform)
 
 This project demonstrates how to design, build, and deploy a containerized Node.js application using a complete DevOps workflow and AWS cloud infrastructure.
@@ -63,7 +62,7 @@ GitHub → GitHub Actions → Amazon ECR → Amazon ECS
 * Amazon ECS → Container orchestration
 * Amazon ECR → Container registry
 * GitHub Actions → CI/CD automation
-* Amazon Aurora → Managed database
+* Amazon RDS → Managed database
 * Amazon ElastiCache (Redis) → Caching layer
 * Application Load Balancer → Traffic distribution
 
@@ -185,6 +184,138 @@ Why containerization is important for consistency across environments
 
 ---
 
+## Phase 2: Push Docker Image to AWS & Deploy with ECS
+
+### 🎯 Goal
+
+Push the Docker image to a cloud registry and run the application as a live container using a managed service.
+
+---
+
+## 📦 Step 1: Push Docker Image to Amazon ECR
+
+### 📌 What we did
+
+* Created a private container registry
+* Authenticated Docker with AWS
+* Tagged and pushed the image
+
+---
+
+### 🛠️ Commands
+
+Configure AWS CLI:
+
+aws configure
+```
+
+Login to ECR:
+
+aws ecr get-login-password --region <region> \
+| docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
+
+Tag Docker image:
+
+docker tag aws-devops-app:latest <ECR-URL>:latest
+
+Push image to ECR:
+
+docker push <ECR-URL>:latest
+
+---
+
+### ✅ Outcome
+
+* Docker image successfully stored in Amazon ECR
+* Image available for deployment in ECS
+
+---
+
+## 🚀 Step 2: Deploy Application using ECS (Fargate)
+
+### 📌 What we did
+
+* Created ECS cluster using Fargate
+* Defined a task to run the container
+* Deployed a service to keep the app running
+
+---
+
+### ⚙️ Configuration (Console Steps)
+
+#### 1. Create ECS Cluster
+
+* Launch type: Fargate
+* Cluster name: `aws-devops-app-clus`
+
+---
+
+#### 2. Create Task Definition
+
+* Launch type: Fargate
+* Task name: `aws-devops-app-task`
+* CPU: 0.25 vCPU
+* Memory: 0.5 GB
+
+---
+
+#### 3. Add Container
+
+* Container name: `aws-devops-app-container`
+* Image: `<your ECR image URL>`
+* Port: `3000`
+
+---
+
+#### 4. Create Service
+
+* Cluster: `aws-devops-app-clus`
+* Launch type: Fargate
+* Service name: `aws-devops-service`
+* Number of tasks: `1`
+
+---
+
+### 🌐 Networking Setup
+
+* VPC: Default VPC
+* Subnets: All available
+* Auto-assign Public IP: ✅ Enabled
+* Security Group:
+
+  * Allow inbound traffic on port `3000`
+
+---
+
+## 🌍 Access the Application
+
+1. Go to ECS → Cluster → Tasks
+2. Open running task
+3. Copy Public IP
+
+Access in browser:
+
+http://<public-ip>:3000
+
+---
+
+## ✅ Outcome
+
+* Application successfully deployed on AWS
+* Container running via ECS Fargate
+* Publicly accessible using task IP
+
+---
+
+## 💡 Key Learning
+
+* How container images are stored in ECR
+* How ECS runs containers without managing servers
+* Difference between **Task** and **Service**
+* Basics of cloud networking (VPC, subnets, security groups)
+
+
+---
 ## ⚙️ How It Works (End-to-End)
 
 1. User sends request to the application
