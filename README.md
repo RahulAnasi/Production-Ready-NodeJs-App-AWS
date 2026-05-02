@@ -28,11 +28,7 @@ This project solves that by building a system that is:
 
 The system is designed to handle incoming traffic, process requests via containerized services, and efficiently manage data using a database and caching layer.
 
-User → Application Load Balancer → ECS (Docker Containers)
-                  ↓
-              Amazon RDS (Database)
-                  ↓
-              ElastiCache (Redis)
+<img width="827" height="527" alt="image" src="https://github.com/user-attachments/assets/28dcdf26-cd99-47aa-9a51-fc2c5c276aab" />
 
 ---
 
