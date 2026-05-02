@@ -28,7 +28,8 @@ This project solves that by building a system that is:
 
 The system is designed to handle incoming traffic, process requests via containerized services, and efficiently manage data using a database and caching layer.
 
-<img width="827" height="527" alt="image" src="https://github.com/user-attachments/assets/28dcdf26-cd99-47aa-9a51-fc2c5c276aab" />
+<img width="1223" height="627" alt="image" src="https://github.com/user-attachments/assets/59ae905d-d2b3-422a-a117-cae33fa9b484" />
+
 
 ---
 
@@ -75,17 +76,11 @@ The system is designed to handle incoming traffic, process requests via containe
 └── package-lock.json
 ```
 
-# Phase 1: Application & Containerization
+#                                                          Phase 1: Application & Containerization
 
-  Goal
+### Goal: Build a simple Node.js application and containerize it using Docker so it can run consistently across environments.
 
-Build a simple Node.js application and containerize it using Docker so it can run consistently across environments.
-
-  Step 1: Create a Simple Node.js App
-
-  What we did
-      1) Created a basic HTTP server using Node.js
-      2) Verified that the app runs locally
+###  Step 1: Create a Simple Node.js App
 
   Commands
 ```
@@ -126,12 +121,7 @@ http://localhost:3000
 
   Step 2: Dockerize the Application
 
-  What we did
-Created a Dockerfile
-Built a Docker image
-Ran the container locally
-
-  Commands
+  Commands:
 
 Create Dockerfile:
 
@@ -180,21 +170,13 @@ Key Learning:
 
 ---
 
-## Phase 2: Push Docker Image to AWS & Deploy with ECS
+##                                            Phase 2: Push Docker Image to AWS & Deploy with ECS
 
-###   Goal
-
-Push the Docker image to a cloud registry and run the application as a live container using a managed service.
+### Goal: Push the Docker image to a cloud registry and run the application as a live container using a managed service.
 
 ---
 
-##   Step 1: Push Docker Image to Amazon ECR
-
-###   What we did
-
-* Created a private container registry
-* Authenticated Docker with AWS
-* Tagged and pushed the image
+### Step 1: Push Docker Image to Amazon ECR
 
 ---
 
@@ -227,13 +209,7 @@ docker push <ECR-URL>:latest
 
 ---
 
-##   Step 2: Deploy Application using ECS (Fargate)
-
-###   What we did
-
-* Created ECS cluster using Fargate
-* Defined a task to run the container
-* Deployed a service to keep the app running
+### Step 2: Deploy Application using ECS (Fargate)
 
 ---
 
@@ -312,11 +288,9 @@ http://<public-ip>:3000
 
 ---
 
-##   Phase 3: Load Balancing with ALB
+##                                                        Phase 3: Load Balancing with ALB
 
-###   Goal
-
-Improve application accessibility and scalability by introducing a load balancer instead of directly exposing containers.
+### Goal: Improve application accessibility and scalability by introducing a load balancer instead of directly exposing containers.
 
 ---
 
@@ -343,24 +317,7 @@ User → Application Load Balancer → ECS (Containers)
 
 ---
 
-##   Step: Add Application Load Balancer
-
-###   What we did
-
-* Created an Application Load Balancer (ALB)
-* Attached it to ECS service
-* Routed incoming traffic to containers
-
----
-
-### Important Note
-
-Existing ECS services **cannot be directly modified** to attach an ALB.
-
-  Solution:
-
-* Created a **new ECS service**
-* Configured it with ALB during setup
+## Add Application Load Balancer
 
 ---
 
@@ -425,74 +382,11 @@ http://<ALB-DNS-name>
 * How ECS integrates with ALB using target groups
 * Basic traffic routing in cloud environments
 
-## Important Fix: Expose App to External Traffic
-
-### Problem
-
-The application was not accessible when deployed in containers behind a load balancer.
-
 ---
 
-### Root Cause
+  ##                                                Phase 4: Auto Scaling ECS Service
 
-Original code:
-
-```
-server.listen(3000, () => {
-```
-
-By default, Node.js may bind to:
-
-```text
-127.0.0.1 (localhost)
-```
-
-This means:
-
-* App only accepts requests from inside the container
-* External traffic (ALB → ECS) cannot reach it 
-
----
-
-### Solution
-
-Update the server to listen on all network interfaces:
-
-```
-server.listen(3000, '0.0.0.0', () => {
-  console.log('Server running on port 3000');
-});
-```
-
----
-
-### Why This Works
-
-* `0.0.0.0` = listen on all interfaces
-* Allows external traffic to reach the container
-* Required for containerized and cloud deployments
-
----
-
-### Outcome
-
-* Application became accessible via ALB
-* External users can now reach the service
-* Fixed a common container networking issue
-
----
-
-### Key Learning
-
-* Difference between `localhost` and `0.0.0.0`
-* Why containerized apps must listen on all interfaces
-* Common deployment issue in Docker/ECS environments
-
-## 📈 Phase 4: Auto Scaling ECS Service
-
-### Goal
-
-Enable the system to automatically handle traffic by scaling the number of running containers up or down.
+### Goal: Enable the system to automatically handle traffic by scaling the number of running containers up or down.
 
 ---
 
@@ -510,7 +404,7 @@ Implemented **Auto Scaling** at the ECS service level.
 
 ---
 
-## Step 1: Configure Scaling Limits
+### Step 1: Configure Scaling Limits
 
 ### What we did
 
@@ -524,7 +418,7 @@ Defined minimum, desired, and maximum number of tasks.
 
 ---
 
-## Step 2: Add Scaling Policy
+### Step 2: Add Scaling Policy
 
 ### What we did
 
@@ -537,47 +431,6 @@ Configured a **Target Tracking Scaling Policy** based on CPU usage.
 * Policy type: Target Tracking
 * Metric: ECS Service Average CPU Utilization
 * Target value: `50%`
-
----
-
-## How Target Tracking Works
-
-* If CPU > 50% → ECS adds more tasks
-* If CPU ≤ 50% → ECS reduces tasks
-
-The system automatically tries to maintain CPU around the target value.
-
----
-
-## Cooldown Periods (Important Concept)
-
-### Why cooldown exists
-
-After scaling, ECS waits before making another decision to avoid unnecessary scaling.
-
----
-
-### Types of cooldown
-
-**Scale-out cooldown**
-
-* After adding tasks → wait before adding more
-
-**Scale-in cooldown**
-
-* After removing tasks → wait before removing more
-
----
-
-## Alternative: Step Scaling (Concept)
-
-Instead of automatic adjustment, scaling can be defined manually:
-
-* CPU > 60% → add 1 task
-* CPU > 80% → add 2 tasks
-* CPU > 90% → add 3 tasks
-
-This gives more control but requires manual configuration.
 
 ---
 
@@ -596,11 +449,9 @@ This gives more control but requires manual configuration.
 * Importance of cooldown periods
 * Basic scaling strategies in cloud environments
 
-## Phase 5: CI/CD Pipeline (GitHub Actions → ECR → ECS)
+##                                           Phase 5: CI/CD Pipeline (GitHub Actions → ECR → ECS)
 
-### Goal
-
-Automate the deployment process so that every code change is automatically built, pushed, and deployed.
+### Goal: Automate the deployment process so that every code change is automatically built, pushed, and deployed.
 
 ---
 
@@ -612,7 +463,7 @@ Git Push → GitHub Actions → Build Docker Image → Push to ECR → Update EC
 
 ---
 
-## Step 1: Push Code to GitHub
+### Step 1: Push Code to GitHub
 
 ### What we did
 
@@ -635,7 +486,7 @@ git push -u origin main
 
 ---
 
-## Step 2: Create CI/CD Pipeline
+### Step 2: Create CI/CD Pipeline
 
 ### What we did
 
@@ -700,7 +551,7 @@ jobs:
 
 ---
 
-## Step 3: Configure Secrets
+### Step 3: Configure Secrets
 
 ### What we did
 
@@ -740,11 +591,9 @@ Required secrets:
 * Importance of secrets management
 * How ECS updates services with new container images
 
-## Phase 6: Database Integration (RDS MySQL)
+##                                               Phase 6: Database Integration (RDS MySQL)
 
-### Goal
-
-Enhance the application from a static response system to a dynamic, data-driven application by integrating a managed database.
+### Goal: Enhance the application from a static response system to a dynamic, data-driven application by integrating a managed database.
 
 ---
 
@@ -762,7 +611,7 @@ Integrated a managed MySQL database using Amazon RDS.
 
 ---
 
-## Step 1: Create Database (RDS)
+### Step 1: Create Database (RDS)
 
 ### What we did
 
@@ -796,7 +645,7 @@ Integrated a managed MySQL database using Amazon RDS.
 
 ---
 
-## Step 2: Update Application
+### Step 2: Update Application
 
 ### What we did
 
@@ -868,7 +717,7 @@ server.listen(3000, '0.0.0.0', () => {
 
 ---
 
-## Step 3: Rebuild & Deploy
+### Step 3: Rebuild & Deploy
 
 ### Commands
 
@@ -930,11 +779,9 @@ Git Push → GitHub Actions → Docker Build → ECR Push → ECS Deployment →
 * Credentials are hardcoded (should use environment variables)
 * No connection pooling implemented yet
 
-## Phase 7: Caching Layer (Redis with ElastiCache)
+##                                               Phase 7: Caching Layer (Redis with ElastiCache)
 
-### Goal
-
-Improve application performance by reducing direct database calls using a caching layer.
+### Goal: Improve application performance by reducing direct database calls using a caching layer.
 
 ---
 
@@ -968,7 +815,7 @@ Request → Cache (Redis) → Database (if needed)
 
 ---
 
-## Step 1: Create Redis (ElastiCache)
+### Step 1: Create Redis (ElastiCache)
 
 ### What we did
 
@@ -1002,7 +849,7 @@ Request → Cache (Redis) → Database (if needed)
 
 ---
 
-## Step 2: Update Application
+### Step 2: Update Application
 
 ### What we did
 
