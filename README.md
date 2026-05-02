@@ -32,18 +32,6 @@ The system is designed to handle incoming traffic, process requests via containe
 
 ---
 
-## CI/CD Pipeline
-
-Code changes are automatically built and deployed using a CI/CD pipeline:
-
-GitHub → GitHub Actions → Amazon ECR → Amazon ECS
-
-* Code push triggers pipeline
-* Docker image is built and pushed to ECR
-* ECS service updates automatically (rolling deployment)
-
----
-
 ## Tech Stack
 
 ### Application Layer
@@ -179,16 +167,16 @@ Access in browser:
 http://localhost:3000
 ```
 
-  Outcome
-Node.js application successfully created
-Application runs locally on port 3000
-Docker image built and containerized successfully
-Application runs inside a container
+Outcome:
+1) Node.js application successfully created.
+2) Application runs locally on port 3000.
+3) Docker image built and containerized successfully.
+4) Application runs inside a container.
 
-  Key Learning
-How to build a basic backend service
-How Docker packages an application with its dependencies
-Why containerization is important for consistency across environments
+Key Learning:
+1) Building a basic backend service
+2) How Docker packages an application with its dependencies
+3) Why containerization is important for consistency across environments
 
 ---
 
